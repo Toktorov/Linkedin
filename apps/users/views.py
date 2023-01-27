@@ -1,5 +1,5 @@
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.users.models import User
@@ -8,7 +8,7 @@ from apps.users.permissions import UsersPermissions
 
 # Create your views here.
 class UserAPIViewSet(GenericViewSet, ListModelMixin,
-                        CreateModelMixin, RetrieveModelMixin):
+                        CreateModelMixin, RetrieveModelMixin, DestroyModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
