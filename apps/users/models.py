@@ -18,3 +18,23 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+class UserContact(models.Model):
+    from_user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="from_user_contact",
+    )
+    to_user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="to_user_contact",
+    )
+    is_contact = models.BooleanField(
+        default=False
+    )
+
+    def __str__(self):
+        return f"{self.from_user} - {self.to_user} - {self.is_contact}"
+
+    class Meta:
+        verbose_name = "Контакт"
+        verbose_name_plural = "Контакты"
