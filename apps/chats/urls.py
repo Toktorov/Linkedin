@@ -1,9 +1,9 @@
 from rest_framework.routers import DefaultRouter
 
-from apps.posts.views import PostAPIViewSet
+from apps.chats.views import ChatAPIViewSet
 
 
 router = DefaultRouter()
-router.register(prefix='post', viewset=PostAPIViewSet)
+router.register(prefix='chat', viewset=ChatAPIViewSet)
 
 urlpatterns = router.urls

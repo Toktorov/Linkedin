@@ -21,3 +21,6 @@ class PostAPIViewSet(GenericViewSet, ListModelMixin,
         if self.action in ("update", "partial_update", "destroy"):
             return (IsAuthenticated(), PostPermissions())
         return (AllowAny(), )
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
