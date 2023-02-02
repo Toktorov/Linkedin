@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.users.models import User
+from apps.users.models import User, UserContact
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,6 +16,11 @@ class UserDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'last_login', 'username',
                 'first_name', 'last_name', 'email',
                 'date_joined', 'profile_image', 'is_premium')
+
+class UserContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserContact
+        fields = ('from_user', 'to_user', 'is_contact')
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(

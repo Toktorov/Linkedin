@@ -38,3 +38,4 @@ class UserContact(models.Model):
     class Meta:
         verbose_name = "Контакт"
         verbose_name_plural = "Контакты"
+        unique_together = (('from_user', 'to_user',),)
