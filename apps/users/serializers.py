@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.users.models import User, UserContact
+from apps.posts.serializer import PostSerializer, PostFavoritesSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,12 +11,31 @@ class UserSerializer(serializers.ModelSerializer):
                 'first_name', 'last_name', 'email',
                 'date_joined', 'profile_image', 'is_premium')
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 
+                    'email','profile_image',)
+
 class UserDetailSerializer(serializers.ModelSerializer):
+    #posts - посты пользователя
+    users_post = PostSerializer(read_only = True, many = True)
+    count_posts = serializers.SerializerMethodField(read_only = True)
+    #favorites - избранные пользователя
+    favorites = PostFavoritesSerializer(read_only = True, many = True)
+    count_favorites = serializers.SerializerMethodField(read_only = True)
     class Meta:
         model = User 
         fields = ('id', 'last_login', 'username',
                 'first_name', 'last_name', 'email',
-                'date_joined', 'profile_image', 'is_premium')
+                'date_joined', 'profile_image', 'is_premium',
+                'users_post', 'count_posts', 'favorites', 'count_favorites')
+
+    def get_count_posts(self, instance):
+        return instance.users_post.all().count()
+
+    def get_count_favorites(self, instance):
+        return instance.favorites.all().count()
 
 class UserContactSerializer(serializers.ModelSerializer):
     class Meta:
