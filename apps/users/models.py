@@ -155,6 +155,11 @@ class Education(models.Model):
         verbose_name_plural = "Образовании"
 
 class Skills(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="users_skill"
+    )
     skill = models.CharField(
         max_length=100,
         verbose_name="Название навыка"

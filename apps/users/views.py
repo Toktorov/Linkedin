@@ -2,7 +2,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from apps.users.models import User, UserContact
+from apps.users.models import User, UserContact, WorkExperience, Education, Skills
 from apps.users.serializers import UserSerializer, UserDetailSerializer, UserRegisterSerializer, UserContactSerializer, UserUpdateSerializer
 from apps.users.permissions import UsersPermissions
 
