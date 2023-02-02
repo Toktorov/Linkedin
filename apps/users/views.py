@@ -3,7 +3,9 @@ from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveMode
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.users.models import User, UserContact, WorkExperience, Education, Skills
-from apps.users.serializers import UserSerializer, UserDetailSerializer, UserRegisterSerializer, UserContactSerializer, UserUpdateSerializer
+from apps.users.serializers import (UserSerializer, UserDetailSerializer, UserRegisterSerializer, 
+                                    UserContactSerializer, UserUpdateSerializer, WorkExperienceSerializer, 
+                                    EducationSerializer, SkillsSerializer)
 from apps.users.permissions import UsersPermissions
 
 # Create your views here.
@@ -34,3 +36,30 @@ class UserContactAPIViewSet(GenericViewSet,
 
     def perform_create(self, serializer):
         return serializer.save(from_user=self.request.user)
+
+class WorkExperienceAPIViewSet(GenericViewSet, CreateModelMixin, 
+                                UpdateModelMixin, DestroyModelMixin):
+    queryset = WorkExperience.objects.all()
+    serializer_class = WorkExperienceSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
+
+class EducationAPIViewSet(GenericViewSet, CreateModelMixin,
+                            UpdateModelMixin, DestroyModelMixin):
+    queryset = Education.objects.all()
+    serializer_class = EducationSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
+
+class SkillsAPIViewSet(GenericViewSet, CreateModelMixin,
+                        UpdateModelMixin, DestroyModelMixin):
+    queryset = Skills.objects.all()
+    serializer_class = SkillsSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
