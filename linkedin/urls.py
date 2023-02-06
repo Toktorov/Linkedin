@@ -38,6 +38,7 @@ api_urlpatterns = [
     path('users/', include('apps.users.urls')),
     path('posts/', include('apps.posts.urls')),
     path('chats/', include('apps.chats.urls')),
+    path('vacancies/', include('apps.vacancies.urls')),
 ]
 
 urlpatterns = [

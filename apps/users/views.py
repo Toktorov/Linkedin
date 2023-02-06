@@ -32,7 +32,11 @@ class UserContactAPIViewSet(GenericViewSet,
                             CreateModelMixin, DestroyModelMixin):
     queryset = UserContact.objects.all()
     serializer_class = UserContactSerializer
-    permission_classes = (IsAuthenticated, )
+    
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (IsAuthenticated(), UsersPermissions())
+        return (AllowAny(), )
 
     def perform_create(self, serializer):
         return serializer.save(from_user=self.request.user)
@@ -41,7 +45,11 @@ class WorkExperienceAPIViewSet(GenericViewSet, CreateModelMixin,
                                 UpdateModelMixin, DestroyModelMixin):
     queryset = WorkExperience.objects.all()
     serializer_class = WorkExperienceSerializer
-    permission_classes = (IsAuthenticated, )
+    
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (IsAuthenticated(), UsersPermissions())
+        return (AllowAny(), )
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
@@ -50,7 +58,11 @@ class EducationAPIViewSet(GenericViewSet, CreateModelMixin,
                             UpdateModelMixin, DestroyModelMixin):
     queryset = Education.objects.all()
     serializer_class = EducationSerializer
-    permission_classes = (IsAuthenticated, )
+    
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (IsAuthenticated(), UsersPermissions())
+        return (AllowAny(), )
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
@@ -59,7 +71,11 @@ class SkillsAPIViewSet(GenericViewSet, CreateModelMixin,
                         UpdateModelMixin, DestroyModelMixin):
     queryset = Skills.objects.all()
     serializer_class = SkillsSerializer
-    permission_classes = (IsAuthenticated, )
+  
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (IsAuthenticated(), UsersPermissions())
+        return (AllowAny(), )
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)

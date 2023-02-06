@@ -24,5 +24,4 @@ class ChatMessageAPIViewSet(GenericViewSet, ListModelMixin, UpdateModelMixin,
                             RetrieveModelMixin, CreateModelMixin, DestroyModelMixin):
     queryset = ChatMessage.objects.all()
     serializer_class = ChatMessageSerializer
-
-    
+    permission_classes = (IsAuthenticated, )
