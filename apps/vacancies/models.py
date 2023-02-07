@@ -26,3 +26,18 @@ class Vacancy(models.Model):
     class Meta:
         verbose_name = "Ваканция"
         verbose_name_plural = "Ваканции"
+
+class VacancyFavorite(models.Model):
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,
+        related_name="vacancy_users"
+    )
+    vacancy = models.ForeignKey(
+        Vacancy, 
+        on_delete=models.CASCADE,
+        related_name="users_vacancies"
+    )
+
+    def __str__(self):
+        return f"{self.user} {self.vacancy}"

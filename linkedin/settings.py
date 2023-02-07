@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.posts',
     'apps.users',
     'apps.vacancies',
+    'apps.notifications',
 ]
 
 MIDDLEWARE = [
