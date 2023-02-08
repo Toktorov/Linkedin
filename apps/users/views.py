@@ -1,11 +1,14 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.generics import UpdateAPIView
+from rest_framework.response import Response
+from rest_framework import status
 
 from apps.users.models import User, UserContact, WorkExperience, Education, Skills
 from apps.users.serializers import (UserSerializer, UserDetailSerializer, UserRegisterSerializer, 
                                     UserContactSerializer, UserUpdateSerializer, WorkExperienceSerializer, 
-                                    EducationSerializer, SkillsSerializer)
+                                    EducationSerializer, SkillsSerializer, ChangePasswordSerializer, PasswordResetSerializer)
 from apps.users.permissions import UsersPermissions
 
 # Create your views here.
@@ -27,6 +30,32 @@ class UserAPIViewSet(GenericViewSet, ListModelMixin, UpdateModelMixin,
         if self.action in ('update', 'partial_update', 'destroy'):
             return (IsAuthenticated(), UsersPermissions())
         return (AllowAny(), )
+
+class ChangePasswordAPIView(UpdateAPIView):
+    model = User
+    serializer_class = ChangePasswordSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            if not self.object.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+            return Response(response)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserContactAPIViewSet(GenericViewSet,
                             CreateModelMixin, DestroyModelMixin):

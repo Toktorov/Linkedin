@@ -11,6 +11,9 @@ class User(AbstractUser):
         verbose_name="Премиум",
         default=False
     )
+    premium_date = models.DateTimeField(
+        blank = True, null = True
+    )
 
     def __str__(self):
         return self.username 

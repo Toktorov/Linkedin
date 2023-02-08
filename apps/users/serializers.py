@@ -106,3 +106,23 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+
+    old_password = serializers.CharField(
+        max_length = 255, required=True
+    )
+    new_password = serializers.CharField(
+        max_length = 255, required=True
+    )
+
+class PasswordResetSerializer(serializers.ModelSerializer):
+    model = User 
+
+    email = serializers.CharField(
+        max_length = 255, write_only=True
+    )
+
+    def send_message(self):
+        print("OK")
