@@ -39,6 +39,7 @@ api_urlpatterns = [
     path('posts/', include('apps.posts.urls')),
     path('chats/', include('apps.chats.urls')),
     path('vacancies/', include('apps.vacancies.urls')),
+    path('password/reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
 
 urlpatterns = [
