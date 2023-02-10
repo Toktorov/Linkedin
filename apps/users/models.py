@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from time import timezone
 
 # Create your models here.
 class User(AbstractUser):
@@ -8,11 +9,7 @@ class User(AbstractUser):
         verbose_name="Фотография профиля"
     )
     is_premium = models.BooleanField(
-        verbose_name="Премиум",
         default=False
-    )
-    premium_date = models.DateTimeField(
-        blank = True, null = True
     )
 
     def __str__(self):
@@ -21,6 +18,30 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+class Premium(models.Model):
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        related_name="users_premiums"
+    )
+    start = models.DateTimeField(
+        verbose_name="Начало"
+    )
+    end = models.DateTimeField(
+        verbose_name="Конец"
+    )
+    
+    def __str__(self):
+        return f"{self.user}, {self.start}, {self.end}"
+
+    def is_valid(self):
+        return self.end >= timezone.now().date()
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
 
 class UserContact(models.Model):
     from_user = models.ForeignKey(

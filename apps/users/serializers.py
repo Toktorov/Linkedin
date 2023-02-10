@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.users.models import User, UserContact, WorkExperience, Education, Skills
+from apps.users.models import User, UserContact, WorkExperience, Education, Skills, Premium
 from apps.posts.serializer import PostSerializer, PostFavoritesSerializer
 
 
@@ -10,6 +10,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'last_login', 'username',
                 'first_name', 'last_name', 'email',
                 'date_joined', 'profile_image', 'is_premium')
+
+class PremiumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Premium
+        fields = ('id', 'user', 'start', 'end')
 
 class WorkExperienceSerializer(serializers.ModelSerializer):
     class Meta:

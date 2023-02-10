@@ -9,10 +9,11 @@ from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail 
 
-from apps.users.models import User, UserContact, WorkExperience, Education, Skills
+from apps.users.models import User, UserContact, WorkExperience, Education, Skills, Premium
 from apps.users.serializers import (UserSerializer, UserDetailSerializer, UserRegisterSerializer, 
                                     UserContactSerializer, UserUpdateSerializer, WorkExperienceSerializer, 
-                                    EducationSerializer, SkillsSerializer, ChangePasswordSerializer, PasswordResetSerializer)
+                                    EducationSerializer, SkillsSerializer, ChangePasswordSerializer, 
+                                    PasswordResetSerializer, PremiumSerializer)
 from apps.users.permissions import UsersPermissions
 
 # Create your views here.
@@ -34,6 +35,12 @@ class UserAPIViewSet(GenericViewSet, ListModelMixin, UpdateModelMixin,
         if self.action in ('update', 'partial_update', 'destroy'):
             return (IsAuthenticated(), UsersPermissions())
         return (AllowAny(), )
+
+class PremiumAPIViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, 
+                            RetrieveModelMixin, DestroyModelMixin):
+    queryset = Premium.objects.all()
+    serializer_class = PremiumSerializer
+    permission_classes = (IsAuthenticated, UsersPermissions)
 
 class ChangePasswordAPIView(UpdateAPIView):
     model = User
