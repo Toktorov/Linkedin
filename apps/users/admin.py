@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.users.models import User, UserContact, TypeEmployment, WorkExperience, JobType, Education, Skills
+from apps.users.models import User, UserContact, TypeEmployment, WorkExperience, JobType, Education, Skills, Premium
 
 # Register your models here.
 admin.site.register(User)
@@ -10,3 +10,4 @@ admin.site.register(WorkExperience)
 admin.site.register(JobType)
 admin.site.register(Education)
 admin.site.register(Skills)
+admin.site.register(Premium)

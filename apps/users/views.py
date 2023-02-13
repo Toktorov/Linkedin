@@ -13,7 +13,7 @@ from apps.users.models import User, UserContact, WorkExperience, Education, Skil
 from apps.users.serializers import (UserSerializer, UserDetailSerializer, UserRegisterSerializer, 
                                     UserContactSerializer, UserUpdateSerializer, WorkExperienceSerializer, 
                                     EducationSerializer, SkillsSerializer, ChangePasswordSerializer, 
-                                    PasswordResetSerializer, PremiumSerializer)
+                                    PremiumSerializer)
 from apps.users.permissions import UsersPermissions
 
 # Create your views here.

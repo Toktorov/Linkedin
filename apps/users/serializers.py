@@ -121,13 +121,3 @@ class ChangePasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(
         max_length = 255, required=True
     )
-
-class PasswordResetSerializer(serializers.ModelSerializer):
-    model = User 
-
-    email = serializers.CharField(
-        max_length = 255, write_only=True
-    )
-
-    def send_message(self):
-        print("OK")
