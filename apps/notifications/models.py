@@ -9,6 +9,13 @@ class Notification(models.Model):
         on_delete=models.CASCADE,
         related_name="users_notifications"
     )
+    message = models.CharField(
+        max_length=255,
+        verbose_name="Уведомление"
+    )
+    is_read = models.BooleanField(
+        default=False
+    )
     created = models.DateTimeField(
         auto_now_add=True
     )
