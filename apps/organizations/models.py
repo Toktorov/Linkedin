@@ -44,6 +44,11 @@ class OrganizationPost(models.Model):
         verbose_name="Организация",
         related_name="organizations_posts"
     )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="organization_post_user"
+    )
     title = models.TextField(
         verbose_name="Заголовок"
     )

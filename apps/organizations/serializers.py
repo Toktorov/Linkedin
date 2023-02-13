@@ -21,7 +21,7 @@ class OrganizationPostCommentSerializer(serializers.ModelSerializer):
 class OrganizationPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizationPost
-        fields = ('id', 'organization', 'title', 'image', 'created')
+        fields = ('id', 'organization', 'user', 'title', 'image', 'created')
 
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
