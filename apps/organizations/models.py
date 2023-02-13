@@ -7,7 +7,7 @@ class Organization(models.Model):
     user = models.ForeignKey(
         User, 
         on_delete=models.CASCADE,
-        related_name="users_Organizations"
+        related_name="users_organizations"
     )
     title = models.CharField(
         max_length=255,
@@ -58,6 +58,10 @@ class OrganizationPost(models.Model):
     def __str__(self):
         return self.title 
 
+    class Meta:
+        verbose_name = "Пост организации"
+        verbose_name_plural = "Посты организации"
+
 class OrganizationPostLike(models.Model):
     post = models.ForeignKey(
         OrganizationPost,
@@ -76,8 +80,8 @@ class OrganizationPostLike(models.Model):
         return f"{self.post} - {self.user}"
 
     class Meta:
-        verbose_name = "Пост организации"
-        verbose_name_plural = "Посты организации"
+        verbose_name = "Лайки поста организации"
+        verbose_name_plural = "Лайки постов организации"
 
 class OrganizationPostComment(models.Model):
     post = models.ForeignKey(
@@ -107,3 +111,24 @@ class OrganizationPostComment(models.Model):
     class Meta:
         verbose_name = "Комментарий организации"
         verbose_name_plural = "Комментарии организации"
+
+class TrackOrganization(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tracks_organizations",
+        verbose_name="Пользователь"
+    )
+    organization = models.ForeignKey(
+        Organization,
+        on_delete=models.CASCADE,
+        related_name="tracks_organization",
+        verbose_name="Организация"
+    )
+
+    def __str__(self):
+        return f"{self.user} {self.organization}"
+
+    class Meta:
+        verbose_name = "Отслеживать организацию"
+        verbose_name_plural = "Отслеживать организации"

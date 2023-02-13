@@ -1,9 +1,14 @@
 from rest_framework import serializers
 
-from apps.organizations.models import Organization, OrganizationPost, OrganizationPostComment, OrganizationPostLike
+from apps.organizations.models import Organization, OrganizationPost, OrganizationPostComment, OrganizationPostLike, TrackOrganization
 
 
-class OrganizationPostLike(serializers.ModelSerializer):
+class TrackOrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TrackOrganization
+        fields = ('id', 'user', 'organization')
+
+class OrganizationPostLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizationPostLike
         fields = ('id', 'user', 'post')
