@@ -110,7 +110,7 @@ DATABASES = {
     'default': {
         # MySQL engine. Powered by the mysqlclient module.
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'linkeding',
+        'NAME': 'toktorov$default',
         'USER': 'toktorov',
         'PASSWORD': 'helloworld',
         'HOST': 'toktorov.mysql.pythonanywhere-services.com',
