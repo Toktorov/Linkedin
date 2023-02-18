@@ -108,13 +108,8 @@ WSGI_APPLICATION = 'linkedin.wsgi.application'
 
 DATABASES = {
     'default': {
-        # MySQL engine. Powered by the mysqlclient module.
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'toktorov$default',
-        'USER': 'toktorov',
-        'PASSWORD': 'helloworld',
-        'HOST': 'toktorov.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
