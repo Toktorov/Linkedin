@@ -8,6 +8,15 @@ class User(AbstractUser):
         upload_to="profile_image/",
         verbose_name="Фотография профиля"
     )
+    USER_ORGANIZATION_CHOICE = (
+        ('Пользователь', 'Пользователь'),
+        ('Организация', 'Организация')
+    )
+    user_or_organization = models.CharField(
+        max_length=100,
+        choices=USER_ORGANIZATION_CHOICE,
+        verbose_name="Выбор аккаунта"
+    )
     is_premium = models.BooleanField(
         default=False
     )

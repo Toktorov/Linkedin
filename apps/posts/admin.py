@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from apps.posts.models import Post, PostImages, PostLike, PostComment, PostFavorites
+from apps.posts import models
 
 # Register your models here.
-admin.site.register(Post)
-admin.site.register(PostImages)
-admin.site.register(PostLike)
-admin.site.register(PostComment)
-admin.site.register(PostFavorites)
+admin.site.register(models.Post)
+admin.site.register(models.PostImages)
+admin.site.register(models.PostLike)
+admin.site.register(models.PostComment)
+admin.site.register(models.PostFavorites)

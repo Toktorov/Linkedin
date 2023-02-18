@@ -24,10 +24,3 @@ class ChatMessageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatMessage
         fields = "__all__"
-
-    def validate(self, attrs):
-        try:
-            chat = Chat.objects.get(pk = self.initial_data['chat'], from_chat_user = self.context['request'].user)
-        except:
-            chat = Chat.objects.get(pk = self.initial_data['chat'], to_chat_user = self.context['request'].user)
-        return attrs

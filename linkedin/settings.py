@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.vacancies',
     'apps.notifications',
-    'apps.organizations',
 ]
 
 MIDDLEWARE = [
@@ -64,23 +63,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'linkedin.urls'
 
 #cors config
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:1000",
-    "http://localhost:2000",
-    "http://localhost:3000",
-    "http://localhost:4000",
-    "http://localhost:5000",
-    "http://localhost:6000",
-    "http://localhost:7000",
-    "http://localhost:8000",
-    "http://localhost:9000",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {

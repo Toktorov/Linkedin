@@ -2,15 +2,13 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated
 
-from apps.notifications.models import Notification
-from apps.notifications.serializers import NotificationSerializer
-from apps.notifications.permissions import NotificationPermissions
+from apps.notifications import models, serializers, permissions
 
 # Create your views here.
 class NotificationAPIViewSet(GenericViewSet, CreateModelMixin, DestroyModelMixin):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
-    permission_classes = (IsAuthenticated, NotificationPermissions)
+    queryset = models.Notification.objects.all()
+    serializer_class = serializers.NotificationSerializer
+    permission_classes = (IsAuthenticated, permissions.NotificationPermissions)
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)

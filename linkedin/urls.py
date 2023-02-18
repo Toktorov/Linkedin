@@ -40,7 +40,6 @@ api_urlpatterns = [
     path('chats/', include('apps.chats.urls')),
     path('vacancies/', include('apps.vacancies.urls')),
     path('notifications/', include('apps.notifications.urls')),
-    path('organizations/', include('apps.organizations.urls')),
     path('password/reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
 
