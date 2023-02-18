@@ -28,8 +28,15 @@ class Chat(models.Model):
 class ChatMessage(models.Model):
     chat = models.ForeignKey(
         Chat, on_delete=models.CASCADE,
-        related_name="user_chat",
+        related_name="chat_messages",
         verbose_name="Чат"
+    )
+    sender = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="message_sender",
+        verbose_name="Отправитель сообщения",
+        null = True
     )
     message = models.CharField(
         max_length=300,
@@ -41,7 +48,7 @@ class ChatMessage(models.Model):
     )
 
     def __str__(self):
-        return f"{self.chat}"
+        return f"{self.chat.id}"
 
     class Meta:
         verbose_name = "Сообщение"
