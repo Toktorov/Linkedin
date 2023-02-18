@@ -13,7 +13,6 @@ router.register(prefix='skills', viewset=views.SkillsAPIViewSet)
 router.register(prefix='premium', viewset=views.PremiumAPIViewSet)
 
 urlpatterns = [
-    path('change/password/', views.ChangePasswordAPIView.as_view(), name = "api_change_password"),
     path('login/', TokenObtainPairView.as_view(), name='api_login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='api_token_refresh'),
 ]

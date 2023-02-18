@@ -1,8 +1,9 @@
 from rest_framework.viewsets import GenericViewSet
-from rest_framework import mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework import mixins
 from rest_framework import status
 
 from apps.users import models, serializers
@@ -18,6 +19,27 @@ class UserAPIViewSet(GenericViewSet,
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
 
+    @action(
+        detail=True, permission_classes=[IsAuthenticated, UsersPermissions], methods=['put', 'patch']
+    )
+    def change_password(self, request, pk=None):
+        user = self.get_object()
+        serializer = serializers.ChangePasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        old_password = serializer.data.get('old_password')
+        new_password = serializer.data.get('new_password')
+        if not user.check_password(old_password):
+            return Response(
+                {'old_password' : 'Старый пароль неверный'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        user.set_password(new_password)
+        user.save()
+        return Response(
+            {'OK' : 'Пароль изменен успешно'},
+            status=status.HTTP_200_OK
+        )
+
     def get_serializer_class(self):
         if self.action in ('retrieve', ):
             return serializers.UserDetailSerializer
@@ -25,6 +47,8 @@ class UserAPIViewSet(GenericViewSet,
             return serializers.UserRegisterSerializer
         if self.action in ('update', 'partial_update'):
             return serializers.UserUpdateSerializer
+        if self.action in ('change_password', ):
+            return serializers.ChangePasswordSerializer
         return serializers.UserSerializer
 
     def get_permissions(self):
@@ -40,32 +64,6 @@ class PremiumAPIViewSet(GenericViewSet,
     queryset = models.Premium.objects.all()
     serializer_class = serializers.PremiumSerializer
     permission_classes = (IsAuthenticated, UsersPermissions)
-
-class ChangePasswordAPIView(UpdateAPIView):
-    model = models.User
-    serializer_class = serializers.ChangePasswordSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def get_object(self, queryset=None):
-        obj = self.request.user
-        return obj
-
-    def update(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            if not self.object.check_password(serializer.data.get("old_password")):
-                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-            self.object.set_password(serializer.data.get("new_password"))
-            self.object.save()
-            response = {
-                'status': 'success',
-                'code': status.HTTP_200_OK,
-                'message': 'Password updated successfully',
-                'data': []
-            }
-            return Response(response)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserContactAPIViewSet(GenericViewSet,
                             mixins.CreateModelMixin, 
