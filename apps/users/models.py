@@ -181,7 +181,7 @@ class Education(models.Model):
     )
 
     def __str__(self):
-        return f"{self.title} - {self.educational_institution}"
+        return f"{self.user} - {self.educational_institution}"
 
     class Meta:
         verbose_name = "Образование"

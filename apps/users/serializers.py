@@ -1,8 +1,11 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
-from apps.users.models import User, UserContact, WorkExperience, Education, Skills, Premium
+from apps.users.models import UserContact, WorkExperience, Education, Skills, Premium
 from apps.posts.serializer import PostSerializer, PostFavoritesSerializer
 
+
+User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,21 +35,22 @@ class EducationSerializer(serializers.ModelSerializer):
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skills
-        fields = ('skill', )
+        fields = ('user', 'skill', )
 
 class UserDetailSerializer(serializers.ModelSerializer):
     #posts - посты пользователя
-    users_post = PostSerializer(read_only = True, many = True)
-    count_posts = serializers.SerializerMethodField(read_only = True)
+    users_post = PostSerializer(read_only=True, many=True)
+    count_posts = serializers.SerializerMethodField(read_only=True)
     #favorites - избранные пользователя
-    favorites = PostFavoritesSerializer(read_only = True, many = True)
-    count_favorites = serializers.SerializerMethodField(read_only = True)
+    favorites = PostFavoritesSerializer(read_only=True, many=True)
+    count_favorites = serializers.SerializerMethodField(read_only=True)
     #work_experience - опыт работы
-    users_work_experience = WorkExperienceSerializer(read_only = True, many = True)
+    users_work_experience = WorkExperienceSerializer(read_only=True, many=True)
     #education - образование
-    users_education = EducationSerializer(read_only = True, many = True)
+    users_education = EducationSerializer(read_only=True, many=True)
     #skills - навыки
-    users_skill = SkillsSerializer(read_only = True, many = True)
+    users_skill = SkillsSerializer(read_only=True, many=True)
+
     class Meta:
         model = User 
         fields = ('id', 'last_login', 'username',
@@ -74,29 +78,34 @@ class UserContactSerializer(serializers.ModelSerializer):
         model = UserContact
         fields = ('from_user', 'to_user', 'is_contact')
 
+    def validate(self, attrs):
+        if attrs['from_user'] == attrs['to_user']:
+            raise serializers.ValidationError({"error": "Нельзя в контакты самому себе"})
+        return attrs
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
-        max_length = 255, write_only=True
+        max_length=255, write_only=True
     )
     email = serializers.CharField(
-        max_length = 255, write_only=True
+        max_length=255, write_only=True
     )
     phone_number = serializers.CharField(
-        max_length = 255, write_only=True
+        max_length=255, write_only=True
     )
     age = serializers.IntegerField(
         write_only=True
     )
     password = serializers.CharField(
-        max_length = 255, write_only=True
+        max_length=255, write_only=True
     )
     password2 = serializers.CharField(
-        max_length = 255, write_only=True
+        max_length=255, write_only=True
     )
 
     class Meta:
         model = User 
-        fields = ('username', 'email', 'phone_number', 'age', 'password', 'password2')
+        fields = ('username', 'email', 'phone_number', 'age', 'user_or_organization', 'password', 'password2')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -106,9 +115,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        password = validated_data.pop('password2')
-        user = User(**validated_data)
-        user.set_password(password)
+        user = User.objects.create(
+            username=validated_data['username'],
+            user_or_organization=validated_data['user_or_organization']
+        )
+        user.set_password(validated_data['password'])
         user.save()
         return user
 
@@ -116,8 +127,8 @@ class ChangePasswordSerializer(serializers.Serializer):
     model = User
 
     old_password = serializers.CharField(
-        max_length = 255, required=True
+        max_length=255, required=True
     )
     new_password = serializers.CharField(
-        max_length = 255, required=True
+        max_length=255, required=True
     )
